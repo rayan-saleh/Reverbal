@@ -1,17 +1,16 @@
 import { useState, useRef } from "react";
 import { MicrophoneIcon } from '@heroicons/react/20/solid'
 
-
 const mimeType = "audio/webm";
 
 const AudioRecorder = () => {
 	const [permission, setPermission] = useState(false);
 
-	const mediaRecorder = useRef(null);
+	const mediaRecorder = useRef(new MediaRecorder(new MediaStream()));
 
 	const [recordingStatus, setRecordingStatus] = useState("inactive");
 
-	const [stream, setStream] = useState(null);
+	const [stream, setStream] = useState(new MediaStream());
 
 	const [audio, setAudio] = useState(null);
 
@@ -26,32 +25,38 @@ const AudioRecorder = () => {
 				});
 				setPermission(true);
 				setStream(mediaStream);
+
+			
+
 			} catch (err: any) {
 				alert(err.message);
 			}
 		} else {
 			alert("The MediaRecorder API is not supported in your browser.");
 		}
+
+			// const startRecording = async () => {
+				setRecordingStatus("recording");
+				// @ts-ignore
+				const media = new MediaRecorder(stream, { type: mimeType });
+		
+				mediaRecorder.current = media;
+		
+				mediaRecorder.current.start();
+		
+				let localAudioChunks: any = [];
+		
+				mediaRecorder.current.ondataavailable = (event: any) => {
+					if (typeof event.data === "undefined") return;
+					if (event.data.size === 0) return;
+					localAudioChunks.push(event.data);
+				};
+		
+				setAudioChunks(localAudioChunks);
+			// };
 	};
 
-	const startRecording = async () => {
-		setRecordingStatus("recording");
-		const media = new MediaRecorder(stream, { type: mimeType });
-
-		mediaRecorder.current = media;
-
-		mediaRecorder.current.start();
-
-		let localAudioChunks: any = [];
-
-		mediaRecorder.current.ondataavailable = (event) => {
-			if (typeof event.data === "undefined") return;
-			if (event.data.size === 0) return;
-			localAudioChunks.push(event.data);
-		};
-
-		setAudioChunks(localAudioChunks);
-	};
+	
 
 	const stopRecording = () => {
 		setRecordingStatus("inactive");
@@ -88,7 +93,7 @@ const AudioRecorder = () => {
 					{recordingStatus === "inactive" ? (
 
 						<button
-						type="button" onClick={() => { getMicrophonePermission(); startRecording();}}
+						type="button" onClick={getMicrophonePermission}
 						className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 py-2.5 px-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 						>
 						<MicrophoneIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
