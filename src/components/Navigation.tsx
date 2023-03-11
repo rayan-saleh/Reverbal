@@ -103,7 +103,7 @@ export default function Navigation() {
           
         </Dialog.Panel>
       </Dialog>
-      <div className="mx-auto mt-1 grid max-w-2xl grid-cols-1 gap-y-16 gap-x-8 border-t border-gray-200 sm:mt-1 sm:pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3"></div>
+      {/* <div className="mx-auto mt-1 grid max-w-2xl grid-cols-1 gap-y-16 gap-x-8 border-t border-gray-200 sm:mt-1 sm:pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3"></div> */}
     </header>
   )
 }
