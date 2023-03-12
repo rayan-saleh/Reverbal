@@ -46,7 +46,7 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
             record={record}         // defaults -> false.  Set to true to begin recording
             // pause={boolean}          // defaults -> false (available in React-Mic-Gold)
             visualSetting="sinewave"// defaults -> "sinewave".  Other option is "frequencyBars"
-            className="sound-waves w-96"       // provide css class name
+            className="sound-waves w-11/12 "       // provide css class name
             onStop={onStop}        // required - called when audio stops recording
             onData={onData}        // optional - called when chunk of audio data is available
             // onBlock={function}       // optional - called if user selected "block" when prompted to allow microphone access (available in React-Mic-Gold)

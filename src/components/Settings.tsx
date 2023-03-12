@@ -42,16 +42,16 @@ export default function Settings({handlePrompt}: any) {
     <div >
 
     <div className="items-center	">
-      <label htmlFor="location" className=" flex text-sm font-medium leading-6 text-gray-900">
+      <label htmlFor="location" className="flex text-xs font-medium leading-6 text-gray-600">
           Prompt
           <div className="flex ">
             <button type="button" className=" group relative rounded-full text-black shadow-sm">
               <span className="absolute bottom-1 left-3 scale-0 transition-all rounded p-2 text-xs text-white group-hover:scale-100">
-                <a type="button" className="rounded bg-white py-1 px-2 text-xs font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 min-w-max	">
+                <a type="button" className="rounded bg-white py-1 px-2 text-xs font-medium text-gray-600 shadow-sm ring-1 ring-inset ring-gray-300 min-w-max	">
                     This is some information about this functioality
                 </a>
               </span>
-              <InformationCircleIcon className="h-5 w-5" aria-hidden="true" />
+              <InformationCircleIcon className="text-gray-600 h-4 w-4" aria-hidden="true" />
             </button>
           </div>
         </label>

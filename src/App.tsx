@@ -24,13 +24,20 @@ export default function Example() {
         <rect width="100%" height="100%" strokeWidth={0} fill="url(#0787a7c5-978c-4f66-83c7-11c213f99cb7)" />
       </svg>
       <div className="mx-auto max-w-7xl px-6 pt-10 pb-24 sm:pb-32 lg:flex lg:py-40 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
+        <div className="mx-auto max-w-2xl lg:mx-0 items-center lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
+          {/* div to align the logo and name */}
+          <div className="flex justify-center lg:justify-start">
           <img
-            className="h-11"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+            className="inline-flex h-14 w-14"
+            src="./src/assets/ConversationGPT_logo.png"
             alt="Your Company"
           />
-          <div className="mt-24 sm:mt-32 lg:mt-16">
+
+            <h1 className="inline-flex items-center	 text-3xl font-bold tracking-tight  text-gray-900 sm:text-3xl">
+            ConversationGPT
+          </h1>
+          </div>
+          <div className="mt-24 mb-2 sm:mt-32 lg:mt-16">
             <a href="#" className="inline-flex space-x-6">
               <span className="rounded-full bg-indigo-600/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-600/10">
                 What's new
@@ -41,7 +48,7 @@ export default function Example() {
               </span>
             </a>
           </div>
-          <h1 className="my-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+          <h1 className="mb-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
             Real-time feedback on your conversations
           </h1>
  
