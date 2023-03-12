@@ -42,8 +42,11 @@
   
   export default function Output() {
     return (
-      <div className="overflow-hidden rounded-md bg-white shadow mb-10">
-        <ul role="list" className="divide-y divide-gray-200">
+      // make the text overflow scrollable if it's too long
+      
+      // <div className="overflow-hidden rounded-md bg-white shadow mb-10 ">
+        <div className="px-4 py-5 sm:px-6 over">
+        <ul role="list" className="divide-y divide-gray-200 ">
           {items.map((item) => (
             <li key={item.id} className="px-6 py-4">
               <div className="flex items-center justify-between">
@@ -56,7 +59,7 @@
             </li>
           ))}
         </ul>
-      </div>
+      // </div>
     )
   }
   
