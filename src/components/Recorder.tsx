@@ -1,8 +1,10 @@
+// https://www.npmjs.com/package/webm-to-wav-converter
 
 // @ts-ignore
 import { ReactMic } from 'react-mic';
 import React, { useState } from 'react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
+import toWav from 'audiobuffer-to-wav';
 
  
 export const Recorder = ({handleAudio, recordingBool}: any) => {
@@ -18,20 +20,78 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
     recordingBool(false)
 
   }
- 
-  const onData = (recordedBlob: any) => {
-    console.log('chunk of real-time data is: ', recordedBlob);
 
-    var reader = new FileReader();
-    reader.readAsDataURL(recordedBlob); 
-    reader.onloadend = function() {
-      var base64data = reader.result;                
-      handleAudio(base64data)
-      // startRecording();
+
+  
+
+  var reader = new FileReader(); 
+  const audioContext = new AudioContext();
+
+
+
+  const onData = (recordedBlob: Blob) => {
+    console.log('chunk of real-time data is: ', recordedBlob);
+    
+    reader.readAsArrayBuffer(recordedBlob)           
+
+   
+    
+    // reader.readAsDataURL(recordedBlob); 
+    // reader.onloadend = function() {
+    //   var base64data = reader.result;     
+    //   handleAudio(base64data)
       
-    }
-    // handleAudio(recordedBlob)
+    // }
+    reader.onload = function(e: any){
+      var arrayBuffer = e.target.result;
+      var bytes = new Uint8Array(arrayBuffer);
+      console.log(arrayBuffer);
+      audioContext.decodeAudioData(arrayBuffer).then((audioBuffer) => {
+              let wav = toWav(audioBuffer)
+        
+              let blob = new Blob([ new DataView(wav) ], {
+                  type: 'audio/wav'
+                  
+      
+                  
+                })
+      
+                console.log(blob)
+                handleAudio(blob)
+            });
   }
+
+  //   reader.onload = function(e: any){
+  //     console.log(e.target.result)
+  //     // let arrayBuffer: any = new ArrayBuffer(recordedBlob.size)
+  //     let arrayBuffer = e.target.result;
+  //     audioContext.decodeAudioData(arrayBuffer).then((audioBuffer) => {
+  //       let wav = toWav(audioBuffer)
+  
+  //       let blob = new Blob([ new DataView(wav) ], {
+  //           type: 'audio/wav'
+
+            
+  //         })
+
+  //         console.log(blob)
+  //         handleAudio(blob)
+  //     });
+      
+      
+  // }
+
+
+    // audiobuffer-to-wav
+  }
+
+//   function download(blob: any){
+//     const url = window.URL.createObjectURL(blob)
+//     const anchor = document.createElement('a')
+//     anchor.href = url
+//     anchor.download = 'audio.wav'
+//     anchor.click()
+// }
  
   const onStop = (recordedBlob: any) => {
     // console.log('recordedBlob is: ', recordedBlob);

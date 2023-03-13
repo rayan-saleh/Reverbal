@@ -23,7 +23,7 @@ export default function Example() {
         </defs>
         <rect width="100%" height="100%" strokeWidth={0} fill="url(#0787a7c5-978c-4f66-83c7-11c213f99cb7)" />
       </svg>
-      <div className="mx-auto max-w-7xl px-6 pt-10 pb-24 sm:pb-32 lg:flex lg:py-40 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 pt-10 pb-24 sm:pb-32 lg:flex lg:py-8 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 items-center lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
           {/* div to align the logo and name */}
           <div className="flex justify-center lg:justify-start">
