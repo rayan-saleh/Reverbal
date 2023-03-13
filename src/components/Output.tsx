@@ -15,21 +15,24 @@
 //   }
 
 import { PaperClipIcon } from '@heroicons/react/20/solid'
+import { useEffect } from 'react'
 
 
-  const items = [
-    { id: 1,  output: `Waiting for ChatGPT data...`},
-    // { id: 2,  output: "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy."},
-    // { id: 3,  output: "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy."},
-    // { id: 4,  output: "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy."},
-    // { id: 5,  output: "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy."},
-    // { id: 6,  output: "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy."},
-    // { id: 7,  output: "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy."},
-    // { id: 8,  output: "FizzBuzz"},
+  // const items: string[] = ["Waiting for ChatGPT data...", "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy.", "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy." ]  
   
-  ]
   
-  export default function Output() {
+const Output = (props: any) => {
+    const { value } = props; //'dismantle prop'
+    // useEffect to update output
+    // useEffect(() => {
+    //   console.log(value)
+      
+    // }, [value])
+
+    
+
+
+    
     return (
 
       <div className="max-h-[80vh] min-w-5/6 w-full	 overflow-auto max-w-xl bg-white shadow sm:rounded-lg">
@@ -37,15 +40,15 @@ import { PaperClipIcon } from '@heroicons/react/20/solid'
         <h3 className="text-base font-semibold leading-6 text-gray-900">Applicant Information</h3>
         <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
       </div> */}
-      {items.map((message) => (
+      {value.map((result: any, index: any) => (
             <li
-              key={message.id}
+              key={index}
               // if message.id is even, then have bg-white, else bg-gray-50
-              className={message.id % 2 === 0 ? "bg-gray-100 px-4 py-5 sm:grid sm:px-6" : "bg-white px-4 py-5 sm:grid sm:px-6"}
+              className={index % 2 === 0 ? "bg-gray-50 px-4 py-5 sm:grid sm:px-6" : "bg-white px-4 py-5 sm:grid sm:px-6"}
               // className="bg-white px-4 py-5 sm:grid sm:px-6"
               >
               {/* <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"> */}
-                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{message.output}</dd>
+                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{result}</dd>
               {/* </div> */}
             </li>
           ))}
@@ -90,4 +93,5 @@ import { PaperClipIcon } from '@heroicons/react/20/solid'
 
     )
   }
-  
+ 
+  export default Output
