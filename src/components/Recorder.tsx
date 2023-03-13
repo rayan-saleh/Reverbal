@@ -5,6 +5,8 @@ import { ReactMic } from 'react-mic';
 import React, { useState } from 'react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
 import toWav from 'audiobuffer-to-wav';
+import {FFmpeg, createFFmpeg} from '@ffmpeg/ffmpeg';
+
 
  
 export const Recorder = ({handleAudio, recordingBool}: any) => {
@@ -22,6 +24,7 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
   }
 
 
+
   
 
   var reader = new FileReader(); 
@@ -29,7 +32,7 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
 
 
 
-  const onData = (recordedBlob: Blob) => {
+  const onData = async (recordedBlob: any) => {
     console.log('chunk of real-time data is: ', recordedBlob);
     
     reader.readAsArrayBuffer(recordedBlob)           
@@ -42,24 +45,65 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
     //   handleAudio(base64data)
       
     // }
-    reader.onload = function(e: any){
+    
+
+    // async function convertWebmToMp3(recordedBlob: any) {
+      // const ffmpeg: any = createFFmpeg({ log: false });
+      // await ffmpeg.load();
+    
+      // const inputName = 'input.webm';
+      // const outputName = 'output.mp3';
+    
+      // ffmpeg.FS('writeFile', inputName, await fetch(recordedBlob).then((res) => res.arrayBuffer()));
+    
+      // await ffmpeg.run('-i', inputName, outputName);
+    
+      // const outputData = ffmpeg.FS('readFile', outputName);
+      // const outputBlob = new Blob([outputData.buffer], { type: 'audio/mp3' });
+      // console.log(outputBlob)
+    // }
+
+    // convertWebmToMp3(recordedBlob);
+
+    // The log true is optional, shows ffmpeg logs in the console
+    // const ffmpeg = createFFmpeg({ log: true });
+
+    // const transcode = async ({ target: { recordedBlob } }: any) => {
+    //   const { name } = recordedBlob;
+    //   console.log(recordedBlob)
+    //   // This loads up the ffmpeg.wasm files from a CDN
+    //   await ffmpeg.load();
+    //   const arrayBuffer = await recordedBlob.arrayBuffer()
+    //   const uint8Array = new Uint8Array(arrayBuffer);
+    //   ffmpeg.FS("writeFile", name, uint8Array);
+    //   await ffmpeg.run('-i', name, 'test.mpeg');
+    //   const data = ffmpeg.FS('readFile', 'test.mpeg');
+    //   console.log(data)
+    //   const track: any = document.getElementById("track");
+    //   track.src = URL.createObjectURL(new Blob([data.buffer], { type: 'audio/wav' }));
+    // }
+    
+    // transcode(recordedBlob)
+
+    reader.onloadend = function(e: any){
+
       var arrayBuffer = e.target.result;
-      var bytes = new Uint8Array(arrayBuffer);
+      // var bytes = new Uint8Array(arrayBuffer);
       console.log(arrayBuffer);
       audioContext.decodeAudioData(arrayBuffer).then((audioBuffer) => {
               let wav = toWav(audioBuffer)
+              console.log(wav)
         
               let blob = new Blob([ new DataView(wav) ], {
                   type: 'audio/wav'
                   
-      
                   
                 })
       
                 console.log(blob)
                 handleAudio(blob)
             });
-  }
+    }
 
   //   reader.onload = function(e: any){
   //     console.log(e.target.result)
@@ -149,171 +193,3 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
 }
 
 export default Recorder;
-
-// import React from 'react'
-// // @ts-ignore
-// import { Recorder } from 'react-voice-recorder'
-// import 'react-voice-recorder/dist/index.css'
-
-// class Recorder2 extends React.Component {
-//   constructor(props:any) {
-//     super(props);
-//     this.state = {
-//       audioDetails: {
-//         url: null,
-//         blob: null,
-//         chunks: null,
-//         duration: {
-//           h: 0,
-//           m: 0,
-//           s: 0
-//         }
-//       }
-//     }
-//   }
-
-//   handleAudioStop(data: any) {
-//     console.log(data)
-//     this.setState({ audioDetails: data });
-//     this.handleReset();
-//   }
-//   handleAudioUpload(file: any) {
-//     console.log(file);
-//   }
-//   handleReset() {
-//     const reset = {
-//       url: null,
-//       blob: null,
-//       chunks: null,
-//       duration: {
-//         h: 0,
-//         m: 0,
-//         s: 0
-//       }
-//     };
-//     this.setState({ audioDetails: reset });
-//   }
-//   render() {
-//     return (
-//       <Recorder
-//         record={true}
-//         title={"New recording"}
-//         // @ts-ignore
-//         audioURL={this.state.audioDetails.url}
-//         showUIAudio
-//         // @ts-ignore
-//         handleAudioStop={data => this.handleAudioStop(data)}
-//         // @ts-ignore
-//         handleAudioUpload={data => this.handleAudioUpload(data)}
-//         handleReset={() => this.handleReset()}
-//         mimeTypeToUseWhenRecording={`audio/webm`}
-//       />
-//     )
-//   }
-// }
-
-// export default Recorder2
-
-
-
-
-
-
-// import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
-// import { CheckCircleIcon } from '@heroicons/react/20/solid'
-// import { useState } from 'react';
-
-
-// export default function Recorder({handleAudio, recordingBool}: any) {
-
-//   // const [isRecording,setIsRecording] = useState(false);
-
-//   // new idea:
-//   // since started recording, set timer to 2s then stop recording, send data then start recording again
-
-//   const recorderControls = useAudioRecorder()
-//   // const onRecordingComplete = (blob: any) => {
-//   //   console.log("blob", blob)
-//   // }
-
-//   const processAudio = (blob: any) => {
-//     // const url = URL.createObjectURL(blob);
-//     // const audio = document.createElement("audio");
-//     // audio.src = url;
-//     // audio.controls = true;
-//     // document.body.appendChild(audio);
-//     console.log("blob", blob)
-//     var reader = new FileReader();
-//     reader.readAsDataURL(blob); 
-//     reader.onloadend = function() {
-//       var base64data = reader.result;                
-//       handleAudio(base64data)
-//       // start recording again
-//       startRecording();
-      
-//     }
-
-
-
-
-//   };
-
-
-
-//   const startRecording = () => {
-//     recorderControls.startRecording();
-//     recordingBool(true)
-//     setTimeout(() => {
-//       console.log("stop recording")
-//       stopRecording();
-//     }, 5000);
-      
-//   }
-
-
-//   const stopRecording = () => {
-//     recorderControls.stopRecording();
-//     recordingBool(false)
-//   }
-
-
-
-
-//   return (
-//     <div>
-
-      
-//       <AudioRecorder 
-//         onRecordingComplete={(blob) => processAudio(blob)}
-//         recorderControls={recorderControls}
-//       />
-//       {/* <button
-//         type="button"
-//         onClick={recorderControls.sendRecording}
-//         className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 py-2.5 px-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-//       >
-//         Send recording
-//         <CheckCircleIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" />
-//       </button> */}
-//       <button
-//         type="button"
-//         onClick={startRecording}
-//         className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 py-2.5 px-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-//       >
-//         Start recording
-//         <CheckCircleIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" />
-//       </button>
-//       <button
-//         type="button"
-//         onClick={stopRecording}
-//         className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 py-2.5 px-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-//       >
-//         Stop recording
-//         <CheckCircleIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" />
-//       </button>
-      
- 
-//     </div>
-//   )
-// }
-

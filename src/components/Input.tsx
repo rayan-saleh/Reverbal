@@ -27,6 +27,10 @@ export default function Input() {
     // display what the error is
     onError: (e) => console.log(e),
 
+    onMessage: (e) => {
+      console.log("message", e)
+    }
+
   });
 
 
@@ -114,6 +118,7 @@ export default function Input() {
   };
 
   const recordingBool = (e: boolean) => {
+
    
     console.log("RECORDING:", e)
     if (e === true) {
@@ -123,11 +128,24 @@ export default function Input() {
       const bytes = new TextEncoder().encode(jsonPrompt);
       
       sendMessage(bytes);
+
+      handleBreaks();
     
 
-  };
+    };
 
-}
+  }
+
+
+  // handlebreaks sends a message to the server every 5 seconds to break the connection
+  const handleBreaks = () => {
+    setInterval(() => {
+      let jsonBreak: any;
+      jsonBreak = JSON.stringify({event: "break"})
+      const bytes = new TextEncoder().encode(jsonBreak);
+      sendMessage(bytes);
+    }, 5000);
+  }
 
 //   useEffect(() => {
 //     console.log("prompt", prompt)
