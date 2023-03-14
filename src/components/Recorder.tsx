@@ -28,23 +28,23 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
   
 
   var reader = new FileReader(); 
-  const audioContext = new AudioContext();
+  // const audioContext = new AudioContext();
 
 
 
   const onData = async (recordedBlob: any) => {
-    console.log('chunk of real-time data is: ', recordedBlob);
+    // console.log('chunk of real-time data is: ', recordedBlob);
     
-    reader.readAsArrayBuffer(recordedBlob)           
+    // reader.readAsArrayBuffer(recordedBlob)           
 
    
     
-    // reader.readAsDataURL(recordedBlob); 
-    // reader.onloadend = function() {
-    //   var base64data = reader.result;     
-    //   handleAudio(base64data)
+    reader.readAsDataURL(recordedBlob); 
+    reader.onloadend = function() {
+      var base64data = reader.result;     
+      handleAudio(base64data)
       
-    // }
+    }
     
 
     // async function convertWebmToMp3(recordedBlob: any) {
@@ -85,25 +85,25 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
     
     // transcode(recordedBlob)
 
-    reader.onloadend = function(e: any){
+    // reader.onloadend = function(e: any){
 
-      var arrayBuffer = e.target.result;
-      // var bytes = new Uint8Array(arrayBuffer);
-      console.log(arrayBuffer);
-      audioContext.decodeAudioData(arrayBuffer).then((audioBuffer) => {
-              let wav = toWav(audioBuffer)
-              console.log(wav)
+    //   var arrayBuffer = e.target.result;
+    //   // var bytes = new Uint8Array(arrayBuffer);
+    //   console.log(arrayBuffer);
+    //   audioContext.decodeAudioData(arrayBuffer).then((audioBuffer) => {
+    //           let wav = toWav(audioBuffer)
+    //           console.log(wav)
         
-              let blob = new Blob([ new DataView(wav) ], {
-                  type: 'audio/wav'
+    //           let blob = new Blob([ new DataView(wav) ], {
+    //               type: 'audio/wav'
                   
                   
-                })
+    //             })
       
-                console.log(blob)
-                handleAudio(blob)
-            });
-    }
+    //             console.log(blob)
+    //             handleAudio(blob)
+    //         });
+    // }
 
   //   reader.onload = function(e: any){
   //     console.log(e.target.result)

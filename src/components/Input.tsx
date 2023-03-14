@@ -12,11 +12,12 @@ import useWebSocket, { ReadyState } from 'react-use-websocket';
 
 
 
-export default function Input() {
+export default function Input({handleMessage}: any) {
 
   //Public API that will echo messages sent to it back to the client
-  const socketUrl = 'wss://27c1-2a0c-5bc0-40-3e3b-1104-51a3-ee4f-27c9.eu.ngrok.io/media';
+  const socketUrl = 'wss://a0e0-2a0c-5bc0-40-3e3b-ccc1-c65c-ead4-558c.eu.ngrok.io/';
   // const [messageHistory, setMessageHistory] = useState([]);
+  // const [message, setMessage] = useState("");
 
   const { sendMessage, sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     onOpen: () => {
@@ -27,8 +28,14 @@ export default function Input() {
     // display what the error is
     onError: (e) => console.log(e),
 
-    onMessage: (e) => {
-      console.log("message", e)
+    onMessage: (dataFromServer) => {
+      // console.log("message", dataFromServer)
+      // json parse the data and then pass .data to the handle message function
+
+      let data = JSON.parse(dataFromServer.data)
+      console.log(data.text)
+
+      handleMessage(data.text)
     }
 
   });
@@ -57,51 +64,30 @@ export default function Input() {
 
 
 
-
+// 
 
 
 
   // const [audio, setAudio] = useState("");
 
   const handleAudio = (e: any) => {
-    // setAudio(e);
-    let jsonAudio: any;
-    jsonAudio = JSON.stringify(
-    //   { 
-    //   event: "media",
-    //   sequenceNumber: "1", 
-    //   media: { 
-    //       payload: e 
-    //   } 
-    //  }
-    { 
-      event: "media",
-      media: e
-     }
-     
-     )
+    
 
-     const regex = /^data:audio\/webm;codecs=opus;base64,/;
-
+    const regex = /^data:audio\/webm;codecs=opus;base64,/;
     const result = e.replace(regex, '');
-    // console.log(result);
-
-     let audioObj = { 
-      event: "media",
-      media: result
-     }
-    //  console.log(e)
-     
-
-      const bytes = new TextEncoder().encode(jsonAudio);
-      // sendMessage(jsonAudio);
-      sendJsonMessage(audioObj);
-
+    // console.log(result)
+    // setMessage(message + result)
     
 
 
-    // sendMessage(e) 
-  };
+    let audioObj = { 
+    event: "media",
+    media: result
+    }     
+
+    sendJsonMessage(audioObj);
+
+    };
 
 // useEffect(() => {
 //     console.log("audio", audio)
@@ -117,35 +103,55 @@ export default function Input() {
     setPrompt(e);
   };
 
+  let intervalID: number;
+
   const recordingBool = (e: boolean) => {
 
    
     console.log("RECORDING:", e)
+
+
     if (e === true) {
       console.log("prompt", prompt)
       let jsonPrompt: any;
       jsonPrompt = JSON.stringify({event: "prompt", prompt: prompt})
       const bytes = new TextEncoder().encode(jsonPrompt);
-      
       sendMessage(bytes);
 
-      handleBreaks();
+     intervalID = setInterval(() => {
+        console.log("break")
+        let jsonBreak: any;
+        jsonBreak = JSON.stringify({event: "break"})
+        const bytes = new TextEncoder().encode(jsonBreak);
+        sendMessage(bytes);
+      }, 5000);
     
 
-    };
+    } else {
+
+      if (intervalID) {
+        clearInterval(intervalID);
+      }
+
+      let jsonBreak: any;
+      jsonBreak = JSON.stringify({event: "break"})
+      const bytes = new TextEncoder().encode(jsonBreak);
+      sendMessage(bytes);
+    }
 
   }
 
 
   // handlebreaks sends a message to the server every 5 seconds to break the connection
-  const handleBreaks = () => {
-    setInterval(() => {
-      let jsonBreak: any;
-      jsonBreak = JSON.stringify({event: "break"})
-      const bytes = new TextEncoder().encode(jsonBreak);
-      sendMessage(bytes);
-    }, 5000);
-  }
+  // const handleBreaks = (bool) => {
+  //   setInterval(() => {
+
+  //     let jsonBreak: any;
+  //     jsonBreak = JSON.stringify({event: "break"})
+  //     const bytes = new TextEncoder().encode(jsonBreak);
+  //     sendMessage(bytes);
+  //   }, 5000);
+  // }
 
 //   useEffect(() => {
 //     console.log("prompt", prompt)
