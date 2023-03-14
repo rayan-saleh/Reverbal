@@ -2,49 +2,46 @@
 
 // @ts-ignore
 import { ReactMic } from 'react-mic';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
-import toWav from 'audiobuffer-to-wav';
-import {FFmpeg, createFFmpeg} from '@ffmpeg/ffmpeg';
 
 
  
-export const Recorder = ({handleAudio, recordingBool}: any) => {
-  const [record, setRecord] = useState(false)
+export const Recorder = ({record, handleAudio, onStartRec, onStopRec, onBreak}: any) => {
 
-  const startRecording = () => { 
-    setRecord(true)
-    recordingBool(true)
+  let intervalRef = useRef(0);
+
+  const handleStart = () => { 
+    const intervalId = setInterval(() => {
+      // Not possible. useState updates for the next closure, not the current one.
+      onStopRec({ final: false });
+    }, 5000);
+
+    intervalRef.current = intervalId
+    onStartRec()
   }
 
-  const stopRecording = () => {
-    setRecord(false)
-    recordingBool(false)
-
+  const handleStop = () => {
+    if (intervalRef.current != 0) {
+      clearInterval(intervalRef.current);
+    }
+    onStopRec({ final: true });
   }
-
-
-
-  
-
-  var reader = new FileReader(); 
   // const audioContext = new AudioContext();
-
-
+  const reader = new FileReader();
 
   const onData = async (recordedBlob: any) => {
     // console.log('chunk of real-time data is: ', recordedBlob);
     
-    // reader.readAsArrayBuffer(recordedBlob)           
-
-   
-    
+    // console.log("recorded blob: ", recordedBlob);
     reader.readAsDataURL(recordedBlob); 
     reader.onloadend = function() {
       var base64data = reader.result;     
       handleAudio(base64data)
-      
     }
+    // reader.readAsArrayBuffer(recordedBlob)          
+      
+  }
     
 
     // async function convertWebmToMp3(recordedBlob: any) {
@@ -127,7 +124,6 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
 
 
     // audiobuffer-to-wav
-  }
 
 //   function download(blob: any){
 //     const url = window.URL.createObjectURL(blob)
@@ -136,9 +132,13 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
 //     anchor.download = 'audio.wav'
 //     anchor.click()
 // }
- 
+
+
+
+
+ // handlestop: clear interval + stop
   const onStop = (recordedBlob: any) => {
-    // console.log('recordedBlob is: ', recordedBlob);
+    onBreak();
   }
  
     return (
@@ -150,7 +150,7 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
             record={record}         // defaults -> false.  Set to true to begin recording
             // pause={boolean}          // defaults -> false (available in React-Mic-Gold)
             visualSetting="sinewave"// defaults -> "sinewave".  Other option is "frequencyBars"
-            className="sound-waves w-11/12 "       // provide css class name
+            className="sound-waves w-11/12"       // provide css class name
             onStop={onStop}        // required - called when audio stops recording
             onData={onData}        // optional - called when chunk of audio data is available
             // onBlock={function}       // optional - called if user selected "block" when prompted to allow microphone access (available in React-Mic-Gold)
@@ -171,7 +171,7 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
         <div className="flex items-center gap-x-4 my-4">
           <button
           type="button"
-          onClick={startRecording}
+          onClick={handleStart}
           className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 py-2.5 px-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Start Recording
@@ -180,7 +180,7 @@ export const Recorder = ({handleAudio, recordingBool}: any) => {
         
         <button
           type="button"
-          onClick={stopRecording}
+          onClick={handleStop}
           className="rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
 
         >

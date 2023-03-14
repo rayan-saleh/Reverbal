@@ -14,8 +14,10 @@ import useWebSocket, { ReadyState } from 'react-use-websocket';
 
 export default function Input({handleMessage}: any) {
 
+  const [prompt, setPrompt] = useState("");
+  const [record, setRecord] = useState(false);
   //Public API that will echo messages sent to it back to the client
-  const socketUrl = 'wss://a0e0-2a0c-5bc0-40-3e3b-ccc1-c65c-ead4-558c.eu.ngrok.io/';
+  const socketUrl = 'ws://localhost:8080/';
   // const [messageHistory, setMessageHistory] = useState([]);
   // const [message, setMessage] = useState("");
 
@@ -84,9 +86,9 @@ export default function Input({handleMessage}: any) {
     event: "media",
     media: result
     }     
-
     sendJsonMessage(audioObj);
 
+    
     };
 
 // useEffect(() => {
@@ -96,49 +98,37 @@ export default function Input({handleMessage}: any) {
 
 
 
-
-  const [prompt, setPrompt] = useState("");
+  const handleBreak = () => {
+    let jsonBreak: any;
+    jsonBreak = JSON.stringify({event: "break"})
+    const bytes = new TextEncoder().encode(jsonBreak);
+    console.log("sending break message...")
+    sendMessage(bytes);
+  }
+ 
 
   const handlePrompt = (e: any) => {
     setPrompt(e);
   };
 
-  let intervalID: number;
 
-  const recordingBool = (e: boolean) => {
+  const handleStartRec = () => {
+    // TODO: factor out prompt to only fire the first time
+    console.log("Recording started...")
+    console.log("prompt", prompt)
+    let jsonPrompt: any;
+    jsonPrompt = JSON.stringify({event: "prompt", prompt: prompt})
+    const bytes = new TextEncoder().encode(jsonPrompt);
+    sendMessage(bytes);
 
-   
-    console.log("RECORDING:", e)
+    setRecord(true)
+  }
 
-
-    if (e === true) {
-      console.log("prompt", prompt)
-      let jsonPrompt: any;
-      jsonPrompt = JSON.stringify({event: "prompt", prompt: prompt})
-      const bytes = new TextEncoder().encode(jsonPrompt);
-      sendMessage(bytes);
-
-     intervalID = setInterval(() => {
-        console.log("break")
-        let jsonBreak: any;
-        jsonBreak = JSON.stringify({event: "break"})
-        const bytes = new TextEncoder().encode(jsonBreak);
-        sendMessage(bytes);
-      }, 5000);
-    
-
-    } else {
-
-      if (intervalID) {
-        clearInterval(intervalID);
-      }
-
-      let jsonBreak: any;
-      jsonBreak = JSON.stringify({event: "break"})
-      const bytes = new TextEncoder().encode(jsonBreak);
-      sendMessage(bytes);
+  const handleStopRec = (e: any) => {
+    setRecord(false)
+    if (e.final == false) {
+      handleStartRec();
     }
-
   }
 
 
@@ -171,7 +161,12 @@ export default function Input({handleMessage}: any) {
             
             
             <Settings handlePrompt={handlePrompt} />
-            <Recorder handleAudio={handleAudio} recordingBool={recordingBool} />
+            <Recorder 
+            record={record} 
+            handleAudio={handleAudio} 
+            onStartRec={handleStartRec} 
+            onStopRec={handleStopRec}
+            onBreak={handleBreak} />
                     {/* </div> */}
                   {/* </div> */}
                 </form>
