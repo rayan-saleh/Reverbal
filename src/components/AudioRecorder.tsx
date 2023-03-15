@@ -1,5 +1,7 @@
 import { useState, useRef, MutableRefObject, ReactNode, FC, useEffect } from "react";
 import RecordRTC from 'recordrtc';
+import React from "react";
+import { MicrophoneIcon } from '@heroicons/react/20/solid'
 
 const MIME_TYPE = "audio/wav";
 
@@ -103,7 +105,10 @@ const AudioRecorder: FC<AudioRecorderProps> = ({ onStart, onData, onAudio, child
                         onClick={startRecording} 
                         type="button"
                         >
+                            <MicrophoneIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" />
 							{recordingStatus === "inactive" ? "Start Recording" : "Recording..."}
+                            
+
 						</button>
 					) : null}
 					{recordingStatus === "recording" ? (

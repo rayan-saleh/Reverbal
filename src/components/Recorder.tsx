@@ -12,6 +12,7 @@ export const Recorder = ({record, handleAudio, onStartRec, onStopRec, onBreak}: 
 
   const handleStart = () => { 
     onStartRec();
+    // setState(true );
   }
 
   const handleStop = () => {
@@ -134,14 +135,28 @@ export const Recorder = ({record, handleAudio, onStartRec, onStopRec, onBreak}: 
  
     return (
       <div>
-        {/* center the mic and round the corners */}
-        <div className="flex flex-row justify-center items-stretch rounded-lg bg-violet-100 p-4 mt-10">
-        <AudioRecorder
-          onStart={handleStart}
-          onData={onData}
-          onAudio={handleStop}
-        />
-       </div>
+        {/* center the mic and place below audio recorder button and round the corners */}
+        <div className="flex justify-center items-center rounded-lg bg-black p-4 mt-10">
+
+        <ReactMic
+          record={record}
+          className="sound-wave w-full"
+          // onStop={this.onStop}
+          // onData={this.onData}
+          strokeColor="#FFFF"
+          backgroundColor="#000" />
+        </div>
+
+        <div className="my-2">
+          <AudioRecorder
+            onStart={handleStart}
+            onData={onData}
+            onAudio={handleStop}
+          />
+
+      
+        </div>
+
       </div>
     );
 }

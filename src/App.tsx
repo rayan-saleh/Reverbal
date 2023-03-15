@@ -2,6 +2,7 @@ import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import Input from './components/Input'
 import Output from './components/Output'
 import { useState, useEffect } from 'react'
+import React from "react";
 
 export default function Example() {
   const [output, setOutput] = useState(["Waiting for ChatGPT data..."]);
@@ -17,7 +18,7 @@ export default function Example() {
   // }, [output])
 
   return (
-    <div className="relative isolate overflow-hidden bg-white">
+    <div className="relative mt-10 isolate overflow-hidden bg-white">
       <svg
         className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
         aria-hidden="true"
