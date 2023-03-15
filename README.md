@@ -9,8 +9,10 @@
 -->
 
 
-
-![Group 9 (1)](https://user-images.githubusercontent.com/86924567/225297364-9fcade8b-a016-4eab-a2cc-b4aa90e84e70.png)
+<p align="center">
+<img src="https://user-images.githubusercontent.com/86924567/225308704-b2a949b4-1765-490f-8b3f-2a39a91139a6.png#gh-light-mode-only">
+<img src="https://user-images.githubusercontent.com/86924567/225297364-9fcade8b-a016-4eab-a2cc-b4aa90e84e70.png#gh-dark-mode-only">
+</p>
 
 ---
 
