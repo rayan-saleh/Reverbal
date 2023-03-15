@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from 'react';
+import { useState, MutableRefObject, useRef } from 'react';
 import Settings from './Settings';
 // @ts-ignore
 import Recorder from './Recorder';
@@ -16,8 +16,10 @@ export default function Input({handleMessage}: any) {
 
   const [prompt, setPrompt] = useState("");
   const [record, setRecord] = useState(false);
+  // const intervalRef: MutableRefObject<number> = useRef(0);
   //Public API that will echo messages sent to it back to the client
   const socketUrl = 'ws://localhost:8080/';
+  
   // const [messageHistory, setMessageHistory] = useState([]);
   // const [message, setMessage] = useState("");
 
@@ -74,8 +76,7 @@ export default function Input({handleMessage}: any) {
 
   const handleAudio = (e: any) => {
     
-
-    const regex = /^data:audio\/webm;codecs=opus;base64,/;
+    const regex = /^data:audio\/wav;base64,/;
     const result = e.replace(regex, '');
     // console.log(result)
     // setMessage(message + result)
@@ -88,7 +89,6 @@ export default function Input({handleMessage}: any) {
     }     
     sendJsonMessage(audioObj);
 
-    
     };
 
 // useEffect(() => {
@@ -114,6 +114,11 @@ export default function Input({handleMessage}: any) {
 
   const handleStartRec = () => {
     // TODO: factor out prompt to only fire the first time
+    // const intervalId = setInterval(() => {
+    //   // Not possible. useState updates for the next closure, not the current one.
+    //   handleBreak();
+    // }, 5000);
+    // intervalRef.current = intervalId
     console.log("Recording started...")
     console.log("prompt", prompt)
     let jsonPrompt: any;
@@ -125,10 +130,10 @@ export default function Input({handleMessage}: any) {
   }
 
   const handleStopRec = (e: any) => {
+    // if (intervalRef.current != 0) {
+    //   clearInterval(intervalRef.current);
+    // }
     setRecord(false)
-    if (e.final == false) {
-      handleStartRec();
-    }
   }
 
 

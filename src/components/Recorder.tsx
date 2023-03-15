@@ -3,35 +3,26 @@
 // @ts-ignore
 import { ReactMic } from 'react-mic';
 import React, { useState, useRef } from 'react';
+import AudioRecorder from './AudioRecorder';
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
 
 
  
 export const Recorder = ({record, handleAudio, onStartRec, onStopRec, onBreak}: any) => {
 
-  let intervalRef = useRef(0);
-
   const handleStart = () => { 
-    const intervalId = setInterval(() => {
-      // Not possible. useState updates for the next closure, not the current one.
-      onStopRec({ final: false });
-    }, 5000);
-
-    intervalRef.current = intervalId
-    onStartRec()
+    onStartRec();
   }
 
   const handleStop = () => {
-    if (intervalRef.current != 0) {
-      clearInterval(intervalRef.current);
-    }
-    onStopRec({ final: true });
+    
+    onStopRec();
   }
   // const audioContext = new AudioContext();
   const reader = new FileReader();
 
   const onData = async (recordedBlob: any) => {
-    // console.log('chunk of real-time data is: ', recordedBlob);
+    console.log('chunk of real-time data is: ', recordedBlob);
     
     // console.log("recorded blob: ", recordedBlob);
     reader.readAsDataURL(recordedBlob); 
@@ -137,57 +128,20 @@ export const Recorder = ({record, handleAudio, onStartRec, onStopRec, onBreak}: 
 
 
  // handlestop: clear interval + stop
-  const onStop = (recordedBlob: any) => {
+  const onStop = (audioUrl: string) => {
     onBreak();
   }
  
     return (
       <div>
         {/* center the mic and round the corners */}
-        <div className="flex justify-center items-center rounded-lg bg-black p-4 mt-10">
-        <ReactMic
-        
-            record={record}         // defaults -> false.  Set to true to begin recording
-            // pause={boolean}          // defaults -> false (available in React-Mic-Gold)
-            visualSetting="sinewave"// defaults -> "sinewave".  Other option is "frequencyBars"
-            className="sound-waves w-11/12"       // provide css class name
-            onStop={onStop}        // required - called when audio stops recording
-            onData={onData}        // optional - called when chunk of audio data is available
-            // onBlock={function}       // optional - called if user selected "block" when prompted to allow microphone access (available in React-Mic-Gold)
-            strokeColor="#FFF"   // sinewave or frequency bar color
-            backgroundColor="#000"  // background color
-            // mimeType={"audio/wav"}     // defaults -> "audio/webm".  Set to "audio/wav" for WAV or "audio/mp3" for MP3 audio format (available in React-Mic-Gold)
-            // echoCancellation={boolean} // defaults -> false
-            // autoGainControl={boolean}  // defaults -> false
-            // noiseSuppression={boolean} // defaults -> false
-            // channelCount={number}     // defaults -> 2 (stereo).  Specify 1 for mono.
-            // bitRate={256000}          // defaults -> 128000 (128kbps).  React-Mic-Gold only.
-            // sampleRate={96000}        // defaults -> 44100 (44.1 kHz).  It accepts values only in range: 22050 to 96000 (available in React-Mic-Gold)
-            // timeSlice={100}          // defaults -> 4000 milliseconds.  The interval at which captured audio is returned to onData callback (available in React-Mic-Gold).
-           />
-        </div>
-
-        {/* center buttons and add margin and add gap between buttons*/}
-        <div className="flex items-center gap-x-4 my-4">
-          <button
-          type="button"
-          onClick={handleStart}
-          className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 py-2.5 px-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Start Recording
-          <CheckCircleIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" />
-        </button>
-        
-        <button
-          type="button"
-          onClick={handleStop}
-          className="rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-
-        >
-          Stop Recording
-          {/* <CheckCircleIcon className="-mr-0.5 h-5 w-5" aria-hidden="true" /> */}
-        </button>
-        </div>
+        <div className="flex justify-center items-center rounded-lg bg-violet-100 p-4 mt-10">
+        <AudioRecorder
+          onStart={handleStart}
+          onData={onData}
+          onAudio={handleStop}
+        />
+       </div>
       </div>
     );
 }
