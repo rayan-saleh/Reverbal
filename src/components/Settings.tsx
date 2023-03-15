@@ -11,8 +11,13 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 
 const publishingOptions = [
-  { title: 'Default', prompt: 'Hi'},
-  { title: 'Customer Service', prompt: 'I want you to act as a javascript console. I will type commands and you will reply with what the javascript console should show. I want you to only reply with the terminal output inside one unique code block, and nothing else. do not write explanations. do not type commands unless I instruct you to do so. when I need to tell you something in english, I will do so by putting text inside curly brackets {like this}. My first command is console.log(“Hello World”);'},
+  { title: 'Customer Service Agent', prompt: `From now on I want you to act like you have two brains. The first brain acts as a customer service agent (CSA) and gives clear steps to solving my technical problems.
+
+The second brain filters out questions that the CSA has and turns the output into “NULL”. For example: If I say: “good morning”, the CSA might respond with: “Hello, how can I assist you with your technical issue today?”, but I want you to filter that out and actually respond with “NULL”. Never allow the first brain to ask me a question - I want you to always filter them out.
+  
+You should NEVER get out of character - you should always act like a single brain.`},
+  { title: 'Conversation Helper', prompt: `Starting from the next prompt, I’m going to speak to you verbally through a microphone. I want you to only respond if you think that you have something of value to add. Otherwise just say the word “NULL`},
+  { title: 'Football commentator', prompt: `I want you to act as a football commentator. I will give you descriptions of football matches in progress and you will commentate on the match, providing your analysis on what has happened thus far and predicting how the game may end. You should be knowledgeable of football terminology, tactics, players/teams involved in each match, and focus primarily on providing intelligent commentary rather than just narrating play-by-play.`},
 ]
 
 function classNames(...classes: any) {
@@ -60,7 +65,7 @@ export default function Settings({handlePrompt}: any) {
           onChange={(e) => setSelected(e.target.value)}
           id="location"
           name="location"
-          className=" inline-flex w-48 block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          className=" inline-flex w-min block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
 
         >
           {publishingOptions.map((option) => (

@@ -40,21 +40,21 @@ export default function Example() {
         <div className="mx-auto max-w-2xl lg:mx-0 items-center lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
           {/* div to align the logo and name */}
           <div className="flex justify-center lg:justify-start">
-          <img
+          {/* <img
             className="inline-flex h-11 w-14"
             src="./src/assets/gpt_logo_small.png"
             alt="Your Company"
-          />
+          /> */}
           <img
             className="inline-flex h-14 w-14"
-            src="./src/assets/ConversationGPT_logo.png"
+            src="/ConversationGPT_logo.png"
             alt="Your Company"
           />
 
           
 
             <h1 className="inline-flex items-center	 text-3xl font-bold tracking-tight  text-gray-900 sm:text-3xl">
-            ConversationGPT
+            Reverbal
           </h1>
           </div>
           <div className="mt-24 mb-2 sm:mt-32 lg:mt-16">
@@ -69,7 +69,7 @@ export default function Example() {
             </a>
           </div>
           <h1 className="mb-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Real-time feedback on your conversations
+            Real-time chatbot for your conversations
           </h1>
  
    
