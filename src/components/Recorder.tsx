@@ -135,7 +135,7 @@ export const Recorder = ({record, handleAudio, onStartRec, onStopRec, onBreak}: 
     return (
       <div>
         {/* center the mic and round the corners */}
-        <div className="flex justify-center items-center rounded-lg bg-violet-100 p-4 mt-10">
+        <div className="flex flex-row justify-center items-stretch rounded-lg bg-violet-100 p-4 mt-10">
         <AudioRecorder
           onStart={handleStart}
           onData={onData}

@@ -16,13 +16,12 @@ export default function Input({handleMessage}: any) {
 
   const [prompt, setPrompt] = useState("");
   const [record, setRecord] = useState(false);
-  // const intervalRef: MutableRefObject<number> = useRef(0);
+  const intervalRef: MutableRefObject<number> = useRef(0);
   //Public API that will echo messages sent to it back to the client
-  const socketUrl = 'ws://localhost:8080/';
+  const socketUrl = 'ws://localhost:80/';
   
   // const [messageHistory, setMessageHistory] = useState([]);
   // const [message, setMessage] = useState("");
-
   const { sendMessage, sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     onOpen: () => {
       console.log('WebSocket connection established.');
@@ -88,7 +87,6 @@ export default function Input({handleMessage}: any) {
     media: result
     }     
     sendJsonMessage(audioObj);
-
     };
 
 // useEffect(() => {
@@ -114,11 +112,11 @@ export default function Input({handleMessage}: any) {
 
   const handleStartRec = () => {
     // TODO: factor out prompt to only fire the first time
-    // const intervalId = setInterval(() => {
-    //   // Not possible. useState updates for the next closure, not the current one.
-    //   handleBreak();
-    // }, 5000);
-    // intervalRef.current = intervalId
+    const intervalId = setInterval(() => {
+      // Not possible. useState updates for the next closure, not the current one.
+      handleBreak();
+    }, 5000);
+    intervalRef.current = intervalId
     console.log("Recording started...")
     console.log("prompt", prompt)
     let jsonPrompt: any;
@@ -130,10 +128,11 @@ export default function Input({handleMessage}: any) {
   }
 
   const handleStopRec = (e: any) => {
-    // if (intervalRef.current != 0) {
-    //   clearInterval(intervalRef.current);
-    // }
-    setRecord(false)
+    if (intervalRef.current != 0) {
+      clearInterval(intervalRef.current);
+    }
+    handleBreak();
+    setRecord(false);
   }
 
 
