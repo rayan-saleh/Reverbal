@@ -15,6 +15,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "audiobuffer-to-wav": "^1.0.0",
     "chatgpt": "^5.0.9",
+    "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-audio-voice-recorder": "^1.0.4",
     "react-dom": "^18.2.0",
@@ -22,6 +23,7 @@
     "react-mic-record": "^1.0.6",
     "react-use-websocket": "^4.3.1",
     "react-voice-recorder": "^2.1.2",
+    "recordrtc": "^5.6.2",
     "webm-to-wav-converter": "^1.1.0",
     "ws": "^8.12.1"
   },
@@ -29,6 +31,7 @@
     "@types/audiobuffer-to-wav": "^1.0.2",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@types/recordrtc": "^5.6.10",
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",

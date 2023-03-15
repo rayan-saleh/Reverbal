@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from 'react';
+import { useState, MutableRefObject, useRef } from 'react';
 import Settings from './Settings';
 // @ts-ignore
 import Recorder from './Recorder';
@@ -14,11 +14,14 @@ import useWebSocket, { ReadyState } from 'react-use-websocket';
 
 export default function Input({handleMessage}: any) {
 
+  const [prompt, setPrompt] = useState("");
+  const [record, setRecord] = useState(false);
+  const intervalRef: MutableRefObject<number> = useRef(0);
   //Public API that will echo messages sent to it back to the client
-  const socketUrl = 'wss://a0e0-2a0c-5bc0-40-3e3b-ccc1-c65c-ead4-558c.eu.ngrok.io/';
+  const socketUrl = 'ws://localhost:80/';
+  
   // const [messageHistory, setMessageHistory] = useState([]);
   // const [message, setMessage] = useState("");
-
   const { sendMessage, sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     onOpen: () => {
       console.log('WebSocket connection established.');
@@ -72,8 +75,7 @@ export default function Input({handleMessage}: any) {
 
   const handleAudio = (e: any) => {
     
-
-    const regex = /^data:audio\/webm;codecs=opus;base64,/;
+    const regex = /^data:audio\/wav;base64,/;
     const result = e.replace(regex, '');
     // console.log(result)
     // setMessage(message + result)
@@ -84,9 +86,7 @@ export default function Input({handleMessage}: any) {
     event: "media",
     media: result
     }     
-
     sendJsonMessage(audioObj);
-
     };
 
 // useEffect(() => {
@@ -96,49 +96,43 @@ export default function Input({handleMessage}: any) {
 
 
 
-
-  const [prompt, setPrompt] = useState("");
+  const handleBreak = () => {
+    let jsonBreak: any;
+    jsonBreak = JSON.stringify({event: "break"})
+    const bytes = new TextEncoder().encode(jsonBreak);
+    console.log("sending break message...")
+    sendMessage(bytes);
+  }
+ 
 
   const handlePrompt = (e: any) => {
     setPrompt(e);
   };
 
-  let intervalID: number;
 
-  const recordingBool = (e: boolean) => {
+  const handleStartRec = () => {
+    // TODO: factor out prompt to only fire the first time
+    const intervalId = setInterval(() => {
+      // Not possible. useState updates for the next closure, not the current one.
+      handleBreak();
+    }, 5000);
+    intervalRef.current = intervalId
+    console.log("Recording started...")
+    console.log("prompt", prompt)
+    let jsonPrompt: any;
+    jsonPrompt = JSON.stringify({event: "prompt", prompt: prompt})
+    const bytes = new TextEncoder().encode(jsonPrompt);
+    sendMessage(bytes);
 
-   
-    console.log("RECORDING:", e)
+    setRecord(true)
+  }
 
-
-    if (e === true) {
-      console.log("prompt", prompt)
-      let jsonPrompt: any;
-      jsonPrompt = JSON.stringify({event: "prompt", prompt: prompt})
-      const bytes = new TextEncoder().encode(jsonPrompt);
-      sendMessage(bytes);
-
-     intervalID = setInterval(() => {
-        console.log("break")
-        let jsonBreak: any;
-        jsonBreak = JSON.stringify({event: "break"})
-        const bytes = new TextEncoder().encode(jsonBreak);
-        sendMessage(bytes);
-      }, 5000);
-    
-
-    } else {
-
-      if (intervalID) {
-        clearInterval(intervalID);
-      }
-
-      let jsonBreak: any;
-      jsonBreak = JSON.stringify({event: "break"})
-      const bytes = new TextEncoder().encode(jsonBreak);
-      sendMessage(bytes);
+  const handleStopRec = (e: any) => {
+    if (intervalRef.current != 0) {
+      clearInterval(intervalRef.current);
     }
-
+    handleBreak();
+    setRecord(false);
   }
 
 
@@ -171,7 +165,12 @@ export default function Input({handleMessage}: any) {
             
             
             <Settings handlePrompt={handlePrompt} />
-            <Recorder handleAudio={handleAudio} recordingBool={recordingBool} />
+            <Recorder 
+            record={record} 
+            handleAudio={handleAudio} 
+            onStartRec={handleStartRec} 
+            onStopRec={handleStopRec}
+            onBreak={handleBreak} />
                     {/* </div> */}
                   {/* </div> */}
                 </form>
