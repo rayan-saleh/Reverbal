@@ -7,15 +7,13 @@ import React from 'react';
 
 
 
-
-
-export default function Input({handleMessage}: any) {
+export default function Input({ handleMessage, onRecStart, onBreak }: any) {
 
   const [prompt, setPrompt] = useState("");
   const [record, setRecord] = useState(false);
   const intervalRef: MutableRefObject<number> = useRef(0);
   //Public API that will echo messages sent to it back to the client
-  const socketUrl = 'ws://localhost:80/';
+  const socketUrl = 'ws://localhost:8080/';
   
   // const [messageHistory, setMessageHistory] = useState([]);
   // const [message, setMessage] = useState("");
@@ -98,6 +96,7 @@ export default function Input({handleMessage}: any) {
     jsonBreak = JSON.stringify({event: "break"})
     const bytes = new TextEncoder().encode(jsonBreak);
     console.log("sending break message...")
+    onBreak();
     sendMessage(bytes);
   }
  
@@ -120,8 +119,8 @@ export default function Input({handleMessage}: any) {
     jsonPrompt = JSON.stringify({event: "prompt", prompt: prompt})
     const bytes = new TextEncoder().encode(jsonPrompt);
     sendMessage(bytes);
-
-    setRecord(true)
+    setRecord(true);
+    onRecStart();
   }
 
   const handleStopRec = (e: any) => {

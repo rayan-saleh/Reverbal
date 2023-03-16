@@ -5,17 +5,29 @@ import { useState, useEffect } from 'react'
 import React from "react";
 
 export default function Example() {
-  const [output, setOutput] = useState(["Waiting for ChatGPT data..."]);
+  const [output, setOutput] = useState<String[]>([]);
+  const [breakCount, setBreakCount] = useState<number>(0);
+  
+  const handleRecStart = () => {
+    setOutput([...output, "Waiting for response..."])
+  }
   
   const handleMessage = (message: string) => {
-    setOutput([...output, message]);
+    const arr = [...output];
+    if (breakCount === arr.length) {
+      console.log("breakCount reached");
+      arr[arr.length - 1] = message;
+      setOutput(arr);
 
-    // console.log(output)
+    } else {
+      arr.splice(-1, 0, message);
+      setOutput(arr);
+    }
   };
 
-  // useEffect(() => {
-  //   console.log("APP", output) 
-  // }, [output])
+  const handleBreak = () => {
+    setBreakCount(breakCount + 1)
+  }
 
   return (
     <div className="relative mt-10 isolate overflow-hidden bg-white">
@@ -74,7 +86,7 @@ export default function Example() {
           </h1>
  
    
-          <Input handleMessage={handleMessage}/>
+          <Input handleMessage={handleMessage} onRecStart={handleRecStart} onBreak={handleBreak} />
           {/* <p className="mt-6 text-lg leading-8 text-gray-600">
             Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet
             fugiat veniam occaecat fugiat aliqua.

@@ -15,24 +15,17 @@
 //   }
 
 import { PaperClipIcon } from '@heroicons/react/20/solid'
-import { useEffect } from 'react'
+import { FC } from 'react'
 
 
   // const items: string[] = ["Waiting for ChatGPT data...", "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy.", "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy." ]  
   
-  
-const Output = (props: any) => {
-    const { value } = props; //'dismantle prop'
-    // useEffect to update output
-    // useEffect(() => {
-    //   console.log(value)
-      
-    // }, [value])
+interface OutputProps {
+  value: String[]
+}
 
-    
-
-
-    
+const Output: FC<OutputProps> = ({ value }) => {
+ 
     return (
 
       <div className="max-h-[80vh] min-w-5/6 w-full	 overflow-auto max-w-xl bg-white shadow sm:rounded-lg">

@@ -63,7 +63,6 @@ const AudioRecorder: FC<AudioRecorderProps> = ({ onStart, onData, onAudio, child
                 recorderType: RecordRTC.StereoAudioRecorder,
                 numberOfAudioChannels: 1,
                 timeSlice: 100,
-                sampleRate: 44100,
                 type: 'audio',
                 ondataavailable: (event: Blob) => {
                     if (typeof event === "undefined") return;
@@ -77,8 +76,6 @@ const AudioRecorder: FC<AudioRecorderProps> = ({ onStart, onData, onAudio, child
             mediaRecorder.current = media;
             onStart();
             mediaRecorder.current.startRecording();
-
-            
         }
 		
 		
