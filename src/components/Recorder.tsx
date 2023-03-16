@@ -8,7 +8,7 @@ import { CheckCircleIcon } from '@heroicons/react/20/solid'
 
 
  
-export const Recorder = ({record, handleAudio, onStartRec, onStopRec, onBreak}: any) => {
+export const Recorder = ( {record, handleAudio, onStartRec, onStopRec, onBreak}: any ) => {
 
   const handleStart = () => { 
     onStartRec();
@@ -24,14 +24,12 @@ export const Recorder = ({record, handleAudio, onStartRec, onStopRec, onBreak}: 
 
   const onData = async (recordedBlob: any) => {
     console.log('chunk of real-time data is: ', recordedBlob);
-    
-    // console.log("recorded blob: ", recordedBlob);
+
     reader.readAsDataURL(recordedBlob); 
     reader.onloadend = function() {
       var base64data = reader.result;     
       handleAudio(base64data)
-    }
-    // reader.readAsArrayBuffer(recordedBlob)          
+    }      
       
   }
     
