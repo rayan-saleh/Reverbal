@@ -7,7 +7,7 @@ import React from 'react';
 
 
 
-export default function Input({ handleMessage, onRecStart, onBreak }: any) {
+export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }: any) {
 
   const [prompt, setPrompt] = useState("");
   const [record, setRecord] = useState(false);
@@ -127,8 +127,9 @@ export default function Input({ handleMessage, onRecStart, onBreak }: any) {
     if (intervalRef.current != 0) {
       clearInterval(intervalRef.current);
     }
-    handleBreak();
     setRecord(false);
+    onRecStop();
+    handleBreak();
   }
 
 

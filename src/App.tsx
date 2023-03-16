@@ -6,16 +6,17 @@ import React from "react";
 
 export default function Example() {
   const [output, setOutput] = useState<String[]>([]);
+  const [isRecording, setIsRecording] = useState<boolean>(false);
   const [breakCount, setBreakCount] = useState<number>(0);
   
   const handleRecStart = () => {
     setOutput([...output, "Waiting for response..."])
+    setIsRecording(true)
   }
   
   const handleMessage = (message: string) => {
     const arr = [...output];
-    if (breakCount === arr.length) {
-      console.log("breakCount reached");
+    if (isRecording === false && breakCount === arr.length) {
       arr[arr.length - 1] = message;
       setOutput(arr);
 
@@ -26,8 +27,12 @@ export default function Example() {
   };
 
   const handleBreak = () => {
-    setBreakCount(breakCount + 1)
-  }
+    setBreakCount(breakCount + 1);
+  };
+
+  const handleRecStop = () => {
+    setIsRecording(false);
+  };
 
   return (
     <div className="relative mt-10 isolate overflow-hidden bg-white">
@@ -86,7 +91,7 @@ export default function Example() {
           </h1>
  
    
-          <Input handleMessage={handleMessage} onRecStart={handleRecStart} onBreak={handleBreak} />
+          <Input handleMessage={handleMessage} onRecStart={handleRecStart} onBreak={handleBreak} onRecStop={handleRecStop} />
           {/* <p className="mt-6 text-lg leading-8 text-gray-600">
             Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet
             fugiat veniam occaecat fugiat aliqua.
