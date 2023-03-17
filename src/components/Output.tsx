@@ -22,9 +22,10 @@ import { FC } from 'react'
   
 interface OutputProps {
   value: String[]
+  isRecording: boolean
 }
 
-const Output: FC<OutputProps> = ({ value }) => {
+const Output: FC<OutputProps> = ({ value, isRecording }) => {
  
     return (
 
@@ -63,6 +64,13 @@ const Output: FC<OutputProps> = ({ value }) => {
             </dd>
           </div>
       </div> */}
+      {isRecording ? 
+       <li
+       key="waiting_response"
+       className="bg-white px-4 py-5 sm:grid sm:px-6"
+       >
+         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">Listening...</dd>
+     </li> : <></>}
     </div>
       
       // make the text overflow scrollable if it's too long
