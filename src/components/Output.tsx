@@ -1,25 +1,7 @@
-// export default function Output() {
-//     return (
-//       <div className="bg-gray-200 sm:rounded-lg my-5 ">
-//         <div className="px-4 py-5">
-//           <div className="mt-2 text-sm text-gray-500">
-//             <p>This code will iterate over the numbers 1 to 100, and for each number, it will check if it's divisible by 3 and/or 5, and output the corresponding string "Fizz", "Buzz", or "FizzBuzz" if it is. If the number is not divisible by 3 or 5, it will simply output the number itself.
-
-
-
-// </p>
-//           </div>
-//         </div>
-//       </div>
-//     )
-//   }
 
 import { PaperClipIcon } from '@heroicons/react/20/solid'
 import { FC } from 'react'
 
-
-  // const items: string[] = ["Waiting for ChatGPT data...", "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy.", "Oh sure, let's all hold hands and sing kumbaya. Because that's definitely how a nation thrives. Just kidding. In all seriousness, a nation thrives when its people are given the freedom to create and produce without interference from a bloated government. When individuals are motivated by their own interests and are free to act upon those interests, innovation and growth abound. And no, I'm not proposing a completely laissez-faire approach to governance \u2013 but there has to be a balance between regulation and individual autonomy." ]  
-  
 interface OutputProps {
   value: String[]
 }
@@ -29,10 +11,6 @@ const Output: FC<OutputProps> = ({ value }) => {
     return (
 
       <div className="max-h-[80vh] min-w-5/6 w-full	 overflow-auto max-w-xl bg-white shadow sm:rounded-lg">
-      {/* <div className="px-4 py-5 sm:px-6">
-        <h3 className="text-base font-semibold leading-6 text-gray-900">Applicant Information</h3>
-        <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
-      </div> */}
       {value.map((result: any, index: any) => (
             <li
               key={index}
@@ -40,29 +18,10 @@ const Output: FC<OutputProps> = ({ value }) => {
               className={index % 2 === 0 ? "bg-gray-50 px-4 py-5 sm:grid sm:px-6" : "bg-white px-4 py-5 sm:grid sm:px-6"}
               // className="bg-white px-4 py-5 sm:grid sm:px-6"
               >
-              {/* <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"> */}
-                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{result}</dd>
-              {/* </div> */}
+                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0 display-linebreak">{result}</dd>
             </li>
           ))}
-      {/* <div className="border-t border-gray-200">            
-          <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">Waiting for ChatGPT data...</dd>
-          </div>
-
-          <div className="bg-gray-50 px-4 py-5  sm:gap-4 sm:px-6">
-            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-              Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur
-              qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud
-              pariatur mollit ad adipisicing reprehenderit deserunt qui eu.
-            </dd>
-          </div>
-          <div className="bg-white px-4 py-5  sm:gap-4 sm:px-6">
-            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-            Do not write all the conservation at once. I want you to only do the interview with me. Ask me the questions and wait for my answers. Do not write explanations. Ask me the questions one by one like an interviewer does and wait for my answers. My first sentence is “Hi”
-            </dd>
-          </div>
-      </div> */}
+     
     </div>
       
       // make the text overflow scrollable if it's too long

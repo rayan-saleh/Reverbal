@@ -13,68 +13,36 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
   const [record, setRecord] = useState(false);
   const intervalRef: MutableRefObject<number> = useRef(0);
   //Public API that will echo messages sent to it back to the client
-  const socketUrl = 'ws://localhost:8080/';
+  const socketUrl = 'wss://continuousgpt.fly.dev/';
   
-  // const [messageHistory, setMessageHistory] = useState([]);
-  // const [message, setMessage] = useState("");
   const { sendMessage, sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     onOpen: () => {
       console.log('WebSocket connection established.');
-      // sendMessage('Hello');
-      // recordingBool(false);
     },
     // display what the error is
-    onError: (e) => console.log(e),
+    onError: (errorMessage) => {
+      // let data = JSON.parse(errorMessage.type)
+      // console.log("error ", data)
+      handleMessage('WebSockets connection error, please try again or report the issue.')
+      // handleErrorMessage(errorMessage)
+    },
 
     onMessage: (dataFromServer) => {
-      // console.log("message", dataFromServer)
-      // json parse the data and then pass .data to the handle message function
-
       let data = JSON.parse(dataFromServer.data)
-      console.log(data.text)
+      console.log("full data", data)
+      handleMessage(data)
 
-      handleMessage(data.text)
+      
     }
 
   });
 
 
-  // useEffect(() => {
-  //   if (lastMessage !== null) {
-  //     setMessageHistory((prev) => prev.concat(lastMessage));
-  //   }
-  // }, [lastMessage, setMessageHistory]);
-
-
-
-  // const handleClickSendMessage = useCallback(() => {
-  //   console.log("sent")
-  //   sendMessage(prompt), []
-  // });
-
-  // const connectionStatus = {
-  //   [ReadyState.CONNECTING]: 'Connecting',
-  //   [ReadyState.OPEN]: 'Open',
-  //   [ReadyState.CLOSING]: 'Closing',
-  //   [ReadyState.CLOSED]: 'Closed',
-  //   [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-  // }[readyState];
-
-
-
-// 
-
-
-
-  // const [audio, setAudio] = useState("");
 
   const handleAudio = (e: any) => {
     
     const regex = /^data:audio\/wav;base64,/;
     const result = e.replace(regex, '');
-    // console.log(result)
-    // setMessage(message + result)
-    
 
 
     let audioObj = { 
@@ -83,11 +51,6 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
     }     
     sendJsonMessage(audioObj);
     };
-
-// useEffect(() => {
-//     console.log("audio", audio)
-//     sendMessage(audio);
-// },[audio])
 
 
 
@@ -133,22 +96,6 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
   }
 
 
-  // handlebreaks sends a message to the server every 5 seconds to break the connection
-  // const handleBreaks = (bool) => {
-  //   setInterval(() => {
-
-  //     let jsonBreak: any;
-  //     jsonBreak = JSON.stringify({event: "break"})
-  //     const bytes = new TextEncoder().encode(jsonBreak);
-  //     sendMessage(bytes);
-  //   }, 5000);
-  // }
-
-//   useEffect(() => {
-//     console.log("prompt", prompt)
-//     // handleClickSendMessage();
-
-// },[prompt])
 
 
 
@@ -156,9 +103,6 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
       
       <section aria-labelledby="payment-details-heading">
                 <form action="#" method="POST">
-                  {/* <div className="shadow sm:overflow-hidden sm:rounded-md"> */}
-                    {/* <div className="bg-white py-6 px-4 sm:p-6"> */}
-
             
             
             <Settings handlePrompt={handlePrompt} />
@@ -168,28 +112,9 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
             onStartRec={handleStartRec} 
             onStopRec={handleStopRec}
             onBreak={handleBreak} />
-                    {/* </div> */}
-                  {/* </div> */}
                 </form>
 
 
-            {/* <button onClick={handleClickChangeSocketUrl}>
-              Click Me to change Socket Url
-            </button> */}
-            {/* <button
-              onClick={handleClickSendMessage}
-              disabled={readyState !== ReadyState.OPEN}
-            >
-              Click Me to send 'Hello'
-            </button>
-            <span>The WebSocket is currently {connectionStatus}</span>
-            {lastMessage ? <span>Last message: {lastMessage.data}</span> : null}
-            <ul>
-              {messageHistory.map((message:any, idx): any => (
-                <span key={idx}>{message ? message.data : null}</span>
-              ))}
-            </ul> */}
-				 
       </section>
     )
 

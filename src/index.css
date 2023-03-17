@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 
+.display-linebreak {
+  white-space: pre-line;
+}
+
 /* body {
   margin: 400;
   display: flex;
