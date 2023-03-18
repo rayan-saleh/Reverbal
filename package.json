@@ -21,6 +21,7 @@
     "react-dom": "^18.2.0",
     "react-mic": "^12.4.6",
     "react-mic-record": "^1.0.6",
+    "react-scroll-to-bottom": "^4.2.0",
     "react-use-websocket": "^4.3.1",
     "react-voice-recorder": "^2.1.2",
     "recordrtc": "^5.6.2",

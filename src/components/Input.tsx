@@ -12,6 +12,7 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
   const [prompt, setPrompt] = useState("");
   const [record, setRecord] = useState(false);
   const intervalRef: MutableRefObject<number> = useRef(0);
+  const [message, setMessage] = useState<string>("");
   //Public API that will echo messages sent to it back to the client
   const socketUrl = 'wss://continuousgpt.fly.dev/';
   
@@ -30,7 +31,14 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
     onMessage: (dataFromServer) => {
       let data = JSON.parse(dataFromServer.data)
       console.log("full data", data)
-      handleMessage(data)
+      // handleMessage(data)
+      const newMessage = message + data.text
+      handleMessage(newMessage, data.stream)
+      if (data.stream === "stop") {
+        setMessage("")
+      } else {
+        setMessage(newMessage)
+      }
 
       
     }

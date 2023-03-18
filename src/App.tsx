@@ -15,39 +15,61 @@ export default function Example() {
 
   
   const handleRecStart = () => {
-    setOutput([...output, "Waiting for response..."])
+    // setOutput([...output, "Waiting for response..."])
     setIsRecording(true)
   }
 
 
   
-  const handleMessage = (message: any) => {
+  const handleMessage = (message: string, stream: string) => {
     const arr = [...output];
-    setShowErrorModal(false);
+    // setShowErrorModal(false);
 
-    if (message.text) {
-      if (isRecording === false && breakCount === arr.length) {
-        arr[arr.length - 1] = message.text;
-        setOutput(arr);
-  
-      } else {
-        arr.splice(-1, 0, message.text);
-        setOutput(arr);
-      }
-      
-    }else if (message.error){ //if api error
-      setShowErrorModal(true);
-      setErrorMessage(message.error);
-      
-
-    }
-
-    else{ //if websockets error
-      console.log("message: " + message)
+    if (message === "error"){
       setShowErrorModal(true);
       setErrorMessage(message);
+    } 
+    
+    else{
+      
+      setShowErrorModal(false);
+
+      if (stream === "start") {
+        arr.push("");
+        setOutput(arr);
+  
+      } else if (stream === "streaming") {
+  
+        arr[arr.length - 1] = message;
+        setOutput(arr);
+    }
+
+    
+
+    // if (message.stream) {
+
+    //   // if (isRecording === false && breakCount === arr.length) {
+    //     arr[arr.length - 1] = message.text;
+    //     setOutput(arr);
+  
+      // } else {
+      //   arr.splice(-1, 0, message.text);
+      //   setOutput(arr);
+      // }
+      
+    // }else if (message.error){ //if api error
+    //   setShowErrorModal(true);
+    //   setErrorMessage(message.error);
+      
 
     }
+
+    // else{ //if websockets error
+    //   console.log("message: " + message)
+    //   setShowErrorModal(true);
+      // setErrorMessage(message);
+
+    
 
 
     
@@ -119,7 +141,7 @@ export default function Example() {
         <div className="	mx-auto mt-16 w-8/12 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mt-0 lg:mr-0 lg:max-w-none lg:flex-none xl:ml-32">
           <div className="max-w-3xl w-8/12 flex-none sm:max-w-5xl lg:max-w-none">
             <div className="overflow-y-auto h-full -m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
-              <Output value={output} />
+            <Output value={output} isRecording={isRecording} />
               
             </div>
           </div>
