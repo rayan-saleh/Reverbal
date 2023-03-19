@@ -19,12 +19,9 @@
 
 
 <div align="center">
+  <img alt="GitHub" src="https://img.shields.io/github/license/rayan-saleh/Reverbal?color=blue">
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/rayan-saleh/Reverbal?color=blue&style=social">
 
-  <a href="">![example1](https://img.shields.io/badge/example-one-blue)</a>
-  <a href="">![example2](https://img.shields.io/badge/example-two-blue)</a>
-  <a href="">![example3](https://img.shields.io/badge/example-three-blue)</a>
-  <a href="">![example3](https://img.shields.io/badge/example-four-blue)</a>
-  
 </div>
 
 
@@ -32,54 +29,32 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About Reverbal
-Reverbal combines state-of-the-art Automatic Speech Recognition (ASR) and a chatbot to deliver real-time feedback and suggestions on your conversations. Reverbal is able to listen to conversations and respond when appropriate without starting and stopping recordings. Think of reverbal as a conversation companion able to provide insights, respond to questions and act as semantic memory. Whilst there are several potential use-cases for this type of tool, we have provided (and will continue to build on) several use-cases below:
+# About Reverbal
+Reverbal combines Automatic Speech Recognition (ASR) via the Whisper API and an LLM via the chatGPT API to deliver real-time, continuous feedback and suggestions for your conversations. 
 
+It is able to listen to your conversations and respond when appropriate without starting and stopping the recording. You can think of reverbal as a conversation companion that is able to provide insights, respond to questions and act as semantic memory. 
+
+Whilst there are several potential use-cases for this type of tool, we have provided several example use-cases below:
 * Reverbal acting as a Customer Service Rep - answering technical support questions on a call
-* Acting as a Counselor, exploring your emotions and thoughts out loud using socratic dialogue
-* Acting as a conversation companion by providing interesting thoughts and topics of discussions as you speak
-* A sports commentator - giving insights into statistics and facts about the sport
+* Acting as a Counselor/Therapist - exploring your emotions and thoughts out loud using socratic dialogue
+* Acting as a Conversation Companion - providing interesting thoughts and topics of discussions as you speak
+* A Sports Commentator - giving insights and facts about the game
 
 
+## Demo Video
 https://user-images.githubusercontent.com/86924567/224829705-04f71458-ce85-4544-b260-b8ea784c5b5d.mp4
 
 
 
-
-
+<br />
 
 <!-- GETTING STARTED -->
-## Usage
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
-
+# Usage
+1. Give microphone access if you haven't already done so
+2. Select/edit the prompt you'd like to give to the chatbot
+3. Select the streaming option that you want (the method that determines how often the chatbot receives your voice data)
+4. Press `Start Recording` and being talking
+5. Wait for the chatbot to respond with suggestions and feedback
 
 
 <!-- CONTRIBUTING -->
@@ -97,22 +72,34 @@ Don't forget to give the project a star! Thanks again!
 5. Open a Pull Request
 
 ### Installation
+1. Install dependencies
+```npm install```
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+2. Compile and Hot-Reload for Development
+```npm run dev```
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+3. Compile and Minify for Production
+```npm run build```
+
+
+<!-- ROADMAP -->
+# Roadmap
+
+- [ ] Add TTS
+- [x] Improve mobile css
+- [ ] Improve css / wording
+- [ ] Refactor components
+- [ ] Create CI/CD pipeline
+- [ ] Multi-language Support
+    - [ ] Chinese
+    - [ ] Arabic
+    - [ ] Spanish
+
+See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+
+
+
+
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
