@@ -4,6 +4,7 @@ import Settings from './Settings';
 import Recorder from './Recorder';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import React from 'react';
+import StreamingOptions from './StreamingOptions';
 
 
 
@@ -13,6 +14,8 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
   const [record, setRecord] = useState(false);
   const intervalRef: MutableRefObject<number> = useRef(0);
   const [message, setMessage] = useState<string>("");
+  const [mode , setMode] = useState<string>("Time-based");
+  const [time, setTime] = useState<number>(5000);
   //Public API that will echo messages sent to it back to the client
   const socketUrl = 'wss://continuousgpt.fly.dev/';
   
@@ -20,12 +23,15 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
     onOpen: () => {
       console.log('WebSocket connection established.');
     },
+
+    // if doesnt connect, handleerror will be called
+    // onClose: () => {
+    //   handleMessage("error", `WebSocket connection failed`)
+    // },
+
     // display what the error is
-    onError: (errorMessage) => {
-      // let data = JSON.parse(errorMessage.type)
-      // console.log("error ", data)
-      handleMessage('WebSockets connection error, please try again or report the issue.')
-      // handleErrorMessage(errorMessage)
+    onError: () => {
+      handleMessage("error", 'WebSockets connection error, please try again or report the issue.')
     },
 
     onMessage: (dataFromServer) => {
@@ -36,7 +42,10 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
       handleMessage(newMessage, data.stream)
       if (data.stream === "stop") {
         setMessage("")
-      } else {
+      } else if (data.error) {
+        handleMessage("error", data.error)
+      }
+      else {
         setMessage(newMessage)
       }
 
@@ -77,13 +86,47 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
   };
 
 
+  const streamingMethod = (settings: any) => {
+    setMode(settings.name);
+    console.log("settings.name", settings.name)
+  };
+
+  const handleTime = (e: number) => {
+    let seconds = e*1000
+    setTime(seconds);
+  };
+
+  const handleClick = () => {
+
+    if(mode === "Click-based"){
+
+      handleBreak();
+      // console.log("Recording started...")
+      // console.log("prompt", prompt)
+      // let jsonPrompt: any;
+      // jsonPrompt = JSON.stringify({event: "prompt", prompt: prompt})
+      // const bytes = new TextEncoder().encode(jsonPrompt);
+      // sendMessage(bytes); 
+      // setRecord(true);
+      // onRecStart();
+
+    }
+  }
+
+
+
+
   const handleStartRec = () => {
     // TODO: factor out prompt to only fire the first time
+
+    if (mode === "Time-based") {
     const intervalId = setInterval(() => {
       // Not possible. useState updates for the next closure, not the current one.
       handleBreak();
-    }, 5000);
+    }, time);
+  
     intervalRef.current = intervalId
+  }
     console.log("Recording started...")
     console.log("prompt", prompt)
     let jsonPrompt: any;
@@ -92,6 +135,10 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
     sendMessage(bytes);
     setRecord(true);
     onRecStart();
+
+
+    
+
   }
 
   const handleStopRec = (e: any) => {
@@ -114,6 +161,7 @@ export default function Input({ handleMessage, onRecStart, onBreak, onRecStop }:
             
             
             <Settings handlePrompt={handlePrompt} />
+            <StreamingOptions streamingMethod={streamingMethod} handleTime={handleTime} handleClick={handleClick}/>
             <Recorder 
             record={record} 
             handleAudio={handleAudio} 

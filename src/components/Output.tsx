@@ -21,7 +21,7 @@ const Output: FC<OutputProps> = ({ value, isRecording }) => {
   return (
     
     <ScrollToBottom>
-      <div ref={ref} className="max-h-[70vh] min-w-5/6 w-full overflow-auto max-w-xl bg-white shadow sm:rounded-lg">
+      <div ref={ref} className="max-h-[70vh] min-w-5/6 w-full overflow-auto max-w-xl bg-white shadow ">
         {value.map((result: any, index: any) => (
           <li
             key={index}
@@ -31,7 +31,7 @@ const Output: FC<OutputProps> = ({ value, isRecording }) => {
                 : 'bg-white px-4 py-5 sm:grid sm:px-6'
             }
           >
-            <dd className=" mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0 display-linebreak">
+            <dd className=" mt-1 text-sm text-gray-900 sm:mt-0 display-linebreak">
               {result}
             </dd>
           </li>
