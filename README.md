@@ -86,7 +86,7 @@ Don't forget to give the project a star! Thanks again!
 # Roadmap
 
 - [ ] Add TTS
-- [x] Improve mobile css
+- [ ] Improve mobile css
 - [ ] Improve css / wording
 - [ ] Refactor components
 - [ ] Create CI/CD pipeline
