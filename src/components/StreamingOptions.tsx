@@ -1,12 +1,12 @@
 
 import { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
-import { CheckCircleIcon, ArrowUpTrayIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon, ArrowUpTrayIcon, InformationCircleIcon } from '@heroicons/react/20/solid'
 import { useEffect } from 'react'
 
 const settings = [
-  { name: 'Time-based', description: 'This project would be available to anyone' },
-  { name: 'Click-based', description: 'Only members of this project would be able to access' },
+  { name: 'Time-based', description: 'Send voice data in regular chuncks ' },
+  { name: 'Click-based', description: 'Decide exactly when you want the chatbot to respond' },
 ]
 
 function classNames(...classes: any[]) {
@@ -27,8 +27,21 @@ export default function StreamingOptions({ streamingMethod, handleTime, handleCl
 
   return (
     <div className="mt-10">
-      <label className="text-base font-semibold text-gray-900">Streaming option</label>
-      <p className="text-sm text-gray-500">What method would you like to use to send data to the chatbot?</p>
+      <label htmlFor="location" className="inline-flex text-base font-semibold text-gray-900">
+      Streaming option
+          <div className="flex ">
+            <button type="button" className=" group relative rounded-full text-black shadow-sm">
+              <span className="absolute bottom-1 left-6 scale-0 transition-all rounded p-2 text-xs text-white group-hover:scale-100">
+                <a type="button" className="rounded bg-white py-1 px-2 text-xs font-medium text-gray-600 shadow-sm ring-1 ring-inset ring-gray-300 min-w-max	">
+                This determines how data is sent to the chatbot 
+                </a>
+              </span>
+              <InformationCircleIcon className="mx-1 mb-1 inline-flex text-gray-900 h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
+        </label>
+      {/* <label className="text-base font-semibold text-gray-900">Streaming option</label> */}
+      {/* <p className="text-sm text-gray-500">What method would you like to use to send data to the chatbot?</p> */}
       {/* <fieldset className="mt-4"> */}
         <legend className="sr-only">Notification method</legend>
         <RadioGroup value={selected} onChange={setSelected}>
